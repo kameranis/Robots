@@ -26,10 +26,10 @@ class point {
             return math.abs(this->x - other.x) + math.abs(this->y - other.y);
         }
 };
-
+/*
 class state {
     public:
-        point first;
+        point ;
         point second;
         bool *visited;
 
@@ -45,20 +45,20 @@ class state {
             visited = v;
         }
 };
-
+*/
 class interest {
     public:
+        point current;
         int cost;
         int estimated;
         interest *parent;
-        state current;
 
         interest() {
             cost = estimated = 0;
             parent = NULL;
         }
 
-        interest(int c, int e, interest *p, state curr) {
+        interest(int c, int e, interest *p, point curr) {
             cost = c;
             estimated = e;
             parent = p;
@@ -85,17 +85,14 @@ void print_table(char table[], state *curr, int N, int M) {
 }
         
 
-int admissible(point curr, point meet[], bool visited[], int N) {
-    int i, d;
-    int minimum = INT_MAX;
-    for(i = 0; i < N; i++) {
-        if(!visited[i] && (d = curr.dist(meet[i])) < min) {
-            min = d;
-        }
-    }
-    return min;
+int admissible(point from, point to) {
+    return from.dist(to);
 }
-    
+   
+
+vector<point> A_star(point from, point end) {
+
+}
 
 int main() {
     int N, M;
@@ -115,11 +112,9 @@ int main() {
 
     int meet_points;
     scanf("%d", meet_points);
-    set<point> meet;
-    point temp;
+    point meet[meet_point];
     for(i = 0; i < meet_points; i++) {
-        scanf("%d %d", &temp.x, &temp[i].y);
-        meet.insert(temp);
+        scanf("%d %d", &meet[i].x, &meet[i].y);
     }
 
     char board[N][M];
@@ -128,6 +123,12 @@ int main() {
             board[i][j] = getchar();
         }
         getchar();
+    }
+    
+    vector<point> fir_route = A_star(first, meet_point[0]);
+    for(i = 1; i < meet_points; i++) {
+        vector<point> temp = A_star(meet_point[i - 1], meet_points[i]);
+        fir_route.insert(fir_route.back(), temp.begin(), temp.end());
     }
 
 
