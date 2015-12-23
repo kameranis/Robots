@@ -8,7 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <set>
-
+#include <vector>
 using namespace std;
 
 class point {
@@ -21,13 +21,15 @@ class point {
             x = a;
             y = b;
         }
-
-        dist(point const & other) {
+	bool operator==(const point &c) const {
+		return this->x==c.x && this->y == c.y;
+	}
+        int dist(point const & other) {
             return math.abs(this->x - other.x) + math.abs(this->y - other.y);
         }
 };
-/*
-class state {
+
+/*class state {
     public:
         point ;
         point second;
@@ -51,19 +53,26 @@ class interest {
         point current;
         int cost;
         int estimated;
+	int *estimated_function(point,point);
         interest *parent;
-
         interest() {
             cost = estimated = 0;
             parent = NULL;
+	    // add estimated_fuction pointer
         }
-
         interest(int c, int e, interest *p, point curr) {
             cost = c;
             estimated = e;
-            parent = p;
+	            parent = p;
             current = curr;
+	    estimated_function = &(parent->estimated_function);
         }
+	bool operator< (const interest &c) const {
+		return this->estimated <  c.estimated;
+	}
+	bool operator== (const interest &c) const {
+		return this->current == c.current;
+	}
 };
 
 
@@ -88,10 +97,36 @@ void print_table(char table[], state *curr, int N, int M) {
 int admissible(point from, point to) {
     return from.dist(to);
 }
-   
+class setcmp{
+	bool operator() (const &interest  lhs, const &interest rhs)
+	{
+		return lhs->estimated < rhs->estimated;
+	}
+};	
 
-vector<point> A_star(point from, point end) {
-
+interest A_star(point from, point end) {
+	set<interest> ClosedSet;
+	set<*interest,setcmp> StartSet;
+	interest *start_point= new interest(0,admissiblssible(from,end),nullptr,from);
+	StartSet.insert(start_point);
+	while(!StartSet.empty())
+	{
+		interest *curr = *StartSet.begin(); //get curr
+		StartSet.erate(StartSet.begin(),StartSet.begin()+1); //del min
+		if(curr->current == end) //need overload 
+			{
+				return curr;
+			}
+		next=getNextMoves // mpla mpla ,insert father mpla mpla
+		for(auto &i : next)
+		{
+			if(ClosedSet.count(*i)>0)
+				continue;
+			StartSet.insert(i);
+		}
+	}
+	perror("no path exist");
+	exit(2);
 }
 
 int main() {
