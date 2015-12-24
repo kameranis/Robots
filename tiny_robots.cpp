@@ -51,27 +51,52 @@ class point {
 class interest {
     public:
         point current;
+	point goal;
         int cost;
         int estimated;
-	int *estimated_function(point,point);
+	int *estimated_function(point,point)=nullptr;
         interest *parent;
-        interest() {
+        interest(int (*estimator) (point,point),point goal) {
             cost = estimated = 0;
             parent = NULL;
+	    estimated_function = & estimator ;
+	    this->goal=goal;
 	    // add estimated_fuction pointer
         }
-        interest(int c, int e, interest *p, point curr) {
-            cost = c;
-            estimated = e;
-	            parent = p;
+        interest(interest *p, point curr) {
+            cost = p->cost+1;
+	    parent = p;
             current = curr;
 	    estimated_function = &(parent->estimated_function);
+	    estimated = *estimated_function(curr,goal);
         }
 	bool operator< (const interest &c) const {
 		return this->estimated <  c.estimated;
 	}
 	bool operator== (const interest &c) const {
 		return this->current == c.current;
+	}
+	vector<interest> next()
+	{
+		vector<interest> moves; 
+		point up,down,left,right;
+		up.x=current.x;
+		up.y=current.y+1;
+		down.x=current.x;
+		down.y=current.y-1;
+		left.x=current.x-1;
+		left.y=current.y;
+		right.x=current.x+1;
+		right.y=current.y;
+		interest a(this,up);
+		interest b(this,down);
+		interest c(this,left);
+		interest d(this,right);
+		moves.push_back(a);
+		moves.push_back(b);
+		moves.push_back(c);
+		moves.push_back(d);
+		return moves;
 	}
 };
 
@@ -117,8 +142,8 @@ interest A_star(point from, point end) {
 			{
 				return curr;
 			}
-		next=getNextMoves // mpla mpla ,insert father mpla mpla
-		for(auto &i : next)
+		vecor<interest> next=curr->next(); // mpla mpla ,insert father mpla mpla
+		for(auto i : next)
 		{
 			if(ClosedSet.count(*i)>0)
 				continue;
