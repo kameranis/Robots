@@ -130,13 +130,13 @@ class setcmp{
 };	
 
 interest A_star(point from, point end) {
-	set<interest> ClosedSet;
+	set<interest, a func > ClosedSet; // TODO: DIATAKSI fuction gia fast searching visited
 	set<*interest,setcmp> StartSet;
 	interest *start_point= new interest(0,admissiblssible(from,end),nullptr,from);
 	StartSet.insert(start_point);
 	while(!StartSet.empty())
 	{
-		interest *curr = *StartSet.begin(); //get curr
+		interest *curr = *StartSet.begin(); //get curr always the first is the min
 		StartSet.erate(StartSet.begin(),StartSet.begin()+1); //del min
 		if(curr->current == end) //need overload 
 			{
@@ -184,7 +184,7 @@ int main() {
         }
         getchar();
     }
-    
+    // prepei na perasei apo ola t simia.  mas endiaferei sinantisi mono sto teleueteo simio, simfona me euaggelia pou rwtsise kontogianni
     vector<point> fir_route = A_star(first, meet_point[0]);
     for(i = 1; i < meet_points; i++) {
         vector<point> temp = A_star(meet_point[i - 1], meet_points[i]);
