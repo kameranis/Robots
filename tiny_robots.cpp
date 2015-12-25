@@ -27,6 +27,12 @@ class point {
         int dist(point const & other) {
             return math.abs(this->x - other.x) + math.abs(this->y - other.y);
         }
+        int dist() {
+            return math.abs(this->x) + math.abs(this->y);
+        }
+	bool operator<(const point &c) const{
+		return this-dist() < c.dist(); // need a rotattion case equals
+	}
 };
 
 /*class state {
@@ -56,9 +62,10 @@ class interest {
         int estimated;
 	int *estimated_function(point,point)=nullptr;
         interest *parent;
-        interest(int (*estimator) (point,point),point goal) {
+        interest(int (*estimator) (point,point),point curr,point goal) {
             cost = estimated = 0;
             parent = NULL;
+	    current=curr;
 	    estimated_function = & estimator ;
 	    this->goal=goal;
 	    // add estimated_fuction pointer
@@ -74,11 +81,11 @@ class interest {
 		return this->estimated <  c.estimated;
 	}
 	bool operator== (const interest &c) const {
-		return this->current == c.current;
+		return (this->current == c.current);
 	}
-	vector<interest> next()
+	vector<interest*> next()
 	{
-		vector<interest> moves; 
+		vector<interest*> moves; 
 		point up,down,left,right;
 		up.x=current.x;
 		up.y=current.y+1;
@@ -88,10 +95,10 @@ class interest {
 		left.y=current.y;
 		right.x=current.x+1;
 		right.y=current.y;
-		interest a(this,up);
-		interest b(this,down);
-		interest c(this,left);
-		interest d(this,right);
+		interest *a=new interest(this,up);
+		interest *b=new interest(this,down);
+		interest *c=new interest(this,left);
+		interest *d=new interest(this,right);
 		moves.push_back(a);
 		moves.push_back(b);
 		moves.push_back(c);
@@ -129,10 +136,16 @@ class setcmp{
 	}
 };	
 
-interest A_star(point from, point end) {
-	set<interest, a func > ClosedSet; // TODO: DIATAKSI fuction gia fast searching visited
+class findcmp{
+	bool operator() (const &interest  lhs, const &interest rhs)
+	{
+		return lhs->current< rhs->current;
+	}
+};
+interest A_star(point from, point end,bool player) {
+	set<interest, findcmp> ClosedSet; 
 	set<*interest,setcmp> StartSet;
-	interest *start_point= new interest(0,admissiblssible(from,end),nullptr,from);
+	interest *start_point= new interest(admissiblssible(from,end),from,nullptr);
 	StartSet.insert(start_point);
 	while(!StartSet.empty())
 	{
@@ -147,7 +160,16 @@ interest A_star(point from, point end) {
 		{
 			if(ClosedSet.count(*i)>0)
 				continue;
+			if(player && check(i)) //check if one is at this momment there
 			StartSet.insert(i);
+			else
+			{
+				//add a stall action and if it is better the algorithm will choose it;
+				interest *next;
+				*next=*curr;
+				next->cost++; // cost also give as the momment :)
+				StartSet.insert(next);
+			}
 		}
 	}
 	perror("no path exist");
@@ -172,8 +194,9 @@ int main() {
 
     int meet_points;
     scanf("%d", meet_points);
-    point meet[meet_point];
-    for(i = 0; i < meet_points; i++) {
+    point meet[meet_point+1];
+    meet[0]=first;
+    for(i = 1; i <= meet_points; i++) {
         scanf("%d %d", &meet[i].x, &meet[i].y);
     }
 
@@ -185,10 +208,15 @@ int main() {
         getchar();
     }
     // prepei na perasei apo ola t simia.  mas endiaferei sinantisi mono sto teleueteo simio, simfona me euaggelia pou rwtsise kontogianni
-    vector<point> fir_route = A_star(first, meet_point[0]);
+ /*   vector<point> fir_route = A_star(first, meet_point[0]);
     for(i = 1; i < meet_points; i++) {
         vector<point> temp = A_star(meet_point[i - 1], meet_points[i]);
         fir_route.insert(fir_route.back(), temp.begin(), temp.end());
+    }*/
+    vector<interest> First;
+    for(i=1;i<=meet_points ; i++)
+    {
+	interest temp = A_star(meet_point[i-1],meet_point[i]);
+	First.push_back(temp);
     }
-
-
+}
