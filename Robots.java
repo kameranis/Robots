@@ -115,16 +115,17 @@ public class Robots {
     static int M, N;
     static char[][] board;
 
-    public static Interest Astar(Point start, Point fin, ArrayList<Point> player) {
+    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev){
         PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
         TreeSet<Point> closed= new TreeSet<Point>();
         Interest start_i= new Interest(start,0,start.dist(fin),null);
         queue.add(start_i);
+	int size_t =size;
 	String Name;
 	if(player==null)
 		Name=new String("Player 1 ");
-	else
-		Name=new String("Player 2 ");
+	else{
+		Name=new String("Player 2 ");}
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();
@@ -135,12 +136,13 @@ public class Robots {
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
-		System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + next.dist );
+		int pos_print = next.dist + prev;
+		System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
                 if(closed.contains(next.pos))
                     continue;
                 if(player != null)
                 {
-                    if(next.dist > player.size() || !player.get(next.dist).equals(next.pos))
+                    if(next.dist > size_t || !player[(next.dist)].equals(next.pos))
                         queue.add(next);
                     else
                     {
@@ -265,16 +267,17 @@ public class Robots {
                 board[i] = in.next().toCharArray();
             }
 
-            ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null));
+            ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
 
             for(i = 1; i < meet_points + 1; i++) {
-                player1.addAll(backtrace(Astar(meet[i-1], meet[i], null)));
+                player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
             }
 
-            ArrayList<Point> player2 = backtrace(Astar(second, meet[0], player1));
+            ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
             for(i = 1; i < meet_points + 1; i++) {
-                player2.addAll(backtrace(Astar(meet[i-1], meet[i],new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)))));
+		ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
+                player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
             }
             if(player1.size() > player2.size()) 
             {
