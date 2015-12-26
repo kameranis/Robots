@@ -219,7 +219,7 @@ public class Robots {
                     pl2 = player2.get(i);
                 else
                     pl2 = player2.get(player2.size() - 1);
-		System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl2.c +"> at step " + i );
+		System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
 		System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
 	    }
         }
