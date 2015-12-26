@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 // Used to save bats, walls and spider
-class Point  implements Comparable<Points> {
+class Point {
     public int c, r;
 
     int min(int a, int b) { return a < b ? a : b; }
@@ -24,14 +24,6 @@ class Point  implements Comparable<Points> {
     // Returns the distance between this and p
     public double dist(Point p) {
         return Math.abs(this.r-p.r) + Math.abs(this.c-p.c); 
-    }
-    
-    @Override
-    public int compareTo(Point a)
-    { 
-        int i;
-        if((i=this.x-a.x)!=0) return i;
-        else return this.y - a.y;
     }
 
     @Override
@@ -48,15 +40,15 @@ class Point  implements Comparable<Points> {
 }
 
 /* This class is used by the priority queue to determine the next one
- * in Djikstra.
- * Holds the id number of the creature and its current tentative distance
- * in respect to (0,0) */
+* in Djikstra.
+* Holds the id number of the creature and its current tentative distance
+* in respect to (0,0) */
 
 class Interest implements Comparable<Interest> {
     public Point pos;
     public double dist;
     public double heur;
-    public Interest father;
+    public Interest father
 
     @Override
     public int compareTo(Interest a)
@@ -79,31 +71,10 @@ class Interest implements Comparable<Interest> {
         Interest guest = (Interest) other;
         return (this.pos.equals(guest.pos)) && (this.dist == guest.dist) && (this.heur == guest.heur);
     }
-
+    
     /* Constructors */
     Interest(Point p, double d, double h, Interest f) { pos = p; dist = d; heur = h; father = f; }
     Interest() { pos = Point(); dist = 0; heur = 0; father = null; }
-
-    public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {
-        ArrayList<Interest> ret = new ArrayList<Interest>();
-        if(pos.x+1 < N && board[this.pos.x+1][this.pos.y] != 'x') {
-            Point n = Point(pos.x+1, pos.y);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
-        }
-        if(pos.y+1 < M && board[this.pos.x][this.pos.y+1] != 'x') {
-            Point n = Point(pos.x, pos.y+1);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
-        }
-        if(pos.x > 0 && board[this.pos.x-1][this.pos.y] != 'x') {
-            Point n = Point(pos.x-1, pos.y);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
-        }
-        if(pos.y > 0 && board[this.pos.x][this.pos.y-1] != 'x') {
-            Point n = Point(pos.x, pos.y-1);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
-        }
-        return ret;
-    }
 }
 
 /* Main class */
@@ -111,10 +82,6 @@ public class Robots {
 
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
-
-   
-
-
     public static interest Astar(Point start,Point fin, boolean player){
             PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
 	    TreeSet<Point> closed= new TreeSet<Point>();
@@ -138,7 +105,6 @@ public class Robots {
 		}
 	    }
     }
-
     public static void main(String[] args) {
 
         /* Input */
@@ -151,7 +117,7 @@ public class Robots {
             // Get starting points
             Point first = Point(in.nextInt(), in.nextInt());
             Point second = Point(in.nextInt(), in.nextInt());
-
+    
             // Get meeting point
             Point last = Point(in.nextInt(), in.nextInt());
 
@@ -174,12 +140,7 @@ public class Robots {
                     board[i][j] = in.next().trim().charAt(0);
             }
 
-
-
-
-
 	}
-
         // If file is not valid
         catch(FileNotFoundException e) {
             e.printStackTrace();
