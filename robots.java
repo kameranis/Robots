@@ -87,31 +87,38 @@ public class Robots {
 
         /* Input */
         try {
-            Scanner in = new Scanner(new File(args[0]));
-            ArrayList<Point> creatures = new ArrayList<Point>();
-            ArrayList<Point> walls = new ArrayList<Point>();
-            Point Spider = new Point();
-            int n = in.nextInt();   // Board rows
-            int m = in.nextInt();   // Board columns
-            int k = in.nextInt();   // Number of interesting points
-            in.nextLine();          // Skip line feed
+            Scanner in = new Scanner(System.in);
+            // Read dimensions
+            int N = in.nextInt();
+            int M = in.nextInt();
 
-            /* Reading interesting points */
-            for(int i = 0; i < k; i++)
-            {
-                int r = in.nextInt();
-                int c = in.nextInt();
-                String str = in.nextLine();
-                Point p = new Point(r, c, str.charAt(1));
-                if(p.desc == 'A') 
-                {
-                    Spider = p;
-                    creatures.add(p);
-                }
-                else if(p.desc == 'B') creatures.add(p);    // Point is bat or spider
-                else if(p.desc == '-') walls.add(p);                    // Point is wall
+            // Get starting points
+            Point first = Point(in.nextInt(), in.nextInt());
+            Point second = Point(in.nextInt(), in.nextInt());
+    
+            // Get meeting point
+            Point last = Point(in.nextInt(), in.nextInt());
+
+            // Get intermediate points
+            int meet_points = in.nextInt();
+            Point[] meet = new Point[meet_points + 1];
+
+            int i, j;
+            for(i = 0;, i < meet_points; i++) {
+                meet[i].x = in.nextInt();
+                meet[i].y = in.nextInt();
             }
-            
+
+            meet[meet_points] = last;
+
+            // Get board
+            char[][] board new char[N][M];
+            for(i = 0; i < N; i++) {
+                for(j = 0; j < M; j++)
+                    board[i][j] = in.next().trim().charAt(0);
+            }
+
+
             /* Initialize parameters */
             int l = creatures.size();
             double[][] adjust = new double[l][l];
