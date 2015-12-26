@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 // Used to save bats, walls and spider
-class Point {
+class Point  implements Comparable<Points> {
     public int c, r;
 
     int min(int a, int b) { return a < b ? a : b; }
@@ -24,6 +24,14 @@ class Point {
     // Returns the distance between this and p
     public double dist(Point p) {
         return Math.abs(this.r-p.r) + Math.abs(this.c-p.c); 
+    }
+    
+    @Override
+    public int compareTo(Point a)
+    { 
+        int i;
+        if((i=this.x-a.x)!=0) return i;
+        else return this.y - a.y;
     }
 
     @Override
@@ -40,15 +48,15 @@ class Point {
 }
 
 /* This class is used by the priority queue to determine the next one
-* in Djikstra.
-* Holds the id number of the creature and its current tentative distance
-* in respect to (0,0) */
+ * in Djikstra.
+ * Holds the id number of the creature and its current tentative distance
+ * in respect to (0,0) */
 
 class Interest implements Comparable<Interest> {
     public Point pos;
     public double dist;
     public double heur;
-    public Interest father
+    public Interest father;
 
     @Override
     public int compareTo(Interest a)
@@ -71,10 +79,31 @@ class Interest implements Comparable<Interest> {
         Interest guest = (Interest) other;
         return (this.pos.equals(guest.pos)) && (this.dist == guest.dist) && (this.heur == guest.heur);
     }
-    
+
     /* Constructors */
     Interest(Point p, double d, double h, Interest f) { pos = p; dist = d; heur = h; father = f; }
     Interest() { pos = Point(); dist = 0; heur = 0; father = null; }
+
+    public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {
+        ArrayList<Interest> ret = new ArrayList<Interest>();
+        if(pos.x+1 < N && board[this.pos.x+1][this.pos.y] != 'x') {
+            Point n = Point(pos.x+1, pos.y);
+            ret.push(Interest(n, d+1, n.dist(finish), this));
+        }
+        if(pos.y+1 < M && board[this.pos.x][this.pos.y+1] != 'x') {
+            Point n = Point(pos.x, pos.y+1);
+            ret.push(Interest(n, d+1, n.dist(finish), this));
+        }
+        if(pos.x > 0 && board[this.pos.x-1][this.pos.y] != 'x') {
+            Point n = Point(pos.x-1, pos.y);
+            ret.push(Interest(n, d+1, n.dist(finish), this));
+        }
+        if(pos.y > 0 && board[this.pos.x][this.pos.y-1] != 'x') {
+            Point n = Point(pos.x, pos.y-1);
+            ret.push(Interest(n, d+1, n.dist(finish), this));
+        }
+        return ret;
+    }
 }
 
 /* Main class */
@@ -82,6 +111,7 @@ public class Robots {
 
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
+   
 
     public static void main(String[] args) {
 
@@ -95,7 +125,7 @@ public class Robots {
             // Get starting points
             Point first = Point(in.nextInt(), in.nextInt());
             Point second = Point(in.nextInt(), in.nextInt());
-    
+
             // Get meeting point
             Point last = Point(in.nextInt(), in.nextInt());
 
@@ -119,57 +149,6 @@ public class Robots {
             }
 
 
-            /* Initialize parameters */
-            int l = creatures.size();
-            double[][] adjust = new double[l][l];
-            for(int i = 0; i < l; i++)
-                for(int j = 0; j < l; j++)
-                    adjust[i][j]=0;
-            boolean can;
-
-            // A*: Prints the tentative distance of (0,0) to spider
-            PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
-            double[] distances = new double[creatures.size()];  // Holds current tentative distances of all creatures
-            Arrays.fill(distances, Double.MAX_VALUE);           // Which at the start is inf
-            distances[0] = 0;                                   // Except for the start
-
-            double[] heuristics = new double[creatures.size()]; // Holds the current heuristic of all creatures
-            Arrays.fill(heuristics, Double.MAX_VALUE);          // Which at the start is inf
-            heuristics[0] = creatures.get(0).dist(Spider);      // Except for the start
-            
-            queue.add(new Interest(0, 0, creatures.get(0).dist(Spider)));
-            while(queue.size() > 0)
-            {
-                Interest curr = queue.poll();       // Creature closest to the visited sub-graph
-                if(creatures.get(curr.id).desc == 'A')    // Got a spider. Let's get out of here, babe
-                {
-                    System.out.printf("%.2f\n", curr.dist); // That's right, I like C
-                    return;
-                }
-                for(int i = 0; i < l; i++) {    // Construct edges for i-th creature
-                    /* Haven't tested it and they can see each other */
-                    if(adjust[curr.id][i] == 0 && (can = creatures.get(curr.id).canSee(creatures.get(i), walls)))
-                    {
-                        adjust[curr.id][i]=creatures.get(curr.id).dist(creatures.get(i));
-                    }
-                    /* Haven't tested it and they can't see each other */
-                    else if(adjust[curr.id][i] == 0)
-                    {
-                        adjust[curr.id][i] = Double.MAX_VALUE;
-                    }
-                    adjust[i][curr.id]=adjust[curr.id][i];  // Undirected graph
-                    double newDist;
-                    // Can see each other and this is a better path than previously thought
-                    if(adjust[curr.id][i] != Double.MAX_VALUE && (newDist=curr.dist+adjust[curr.id][i]) < distances[i])
-                    {
-                        queue.remove(new Interest(i, distances[i], heuristics[i]));    // remove old knowledge
-                        distances[i] = newDist;                         // Replace tentative distance
-                        heuristics[i] = newDist + creatures.get(i).dist(Spider);
-                        queue.add(new Interest(i, distances[i], heuristics[i]));       // add new knowledge to the priority queue
-                    }
-                }
-            }
-            System.out.println("impossible");   // A* ended and I can't get to the spider
         }
         // If file is not valid
         catch(FileNotFoundException e) {
