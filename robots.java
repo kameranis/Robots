@@ -159,8 +159,8 @@ public class Robots {
         try {
             Scanner in = new Scanner(System.in);
             // Read dimensions
-            int N = in.nextInt();
-            int M = in.nextInt();
+             N = in.nextInt();
+             M = in.nextInt();
 
             // Get starting points
             Point first = Point(in.nextInt(), in.nextInt());
@@ -182,7 +182,7 @@ public class Robots {
             meet[meet_points] = last;
 
             // Get board
-            char[][] board new char[N][M];
+            board new char[N][M];
             for(i = 0; i < N; i++) {
                 for(j = 0; j < M; j++)
                     board[i][j] = in.next().trim().charAt(0);
