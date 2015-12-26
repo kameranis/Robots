@@ -152,7 +152,18 @@ public class Robots {
     		}
 	    }
     }
-
+    public static ArrayList<Point> backtrace(Interest a)
+    {
+	    ArrayList<Point> val =new ArrayList<Point>();
+	    Interest temp=a;
+	    while(temp!=null)
+	    {
+		val.add(temp.pos);
+		temp=temp.father;
+	    }
+	    Collections.reverse(val);
+	    return val;
+    }
     public static void main(String[] args) {
 
         /* Input */
