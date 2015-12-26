@@ -120,6 +120,11 @@ public class Robots {
         TreeSet<Point> closed= new TreeSet<Point>();
         Interest start_i= new Interest(start,0,start.dist(fin),null);
         queue.add(start_i);
+	String Name;
+	if(player==null)
+		Name=new String("Player 1 ");
+	else
+		Name=new String("Player 2 ");
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();
@@ -130,6 +135,7 @@ public class Robots {
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
+		System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + next.dist );
                 if(closed.contains(next.pos))
                     continue;
                 if(player != null)
@@ -138,6 +144,7 @@ public class Robots {
                         queue.add(next);
                     else
                     {
+			System.out.println("** Conflict ** , thinking about stall or another move");
                         queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
                     }
                 }
@@ -197,6 +204,22 @@ public class Robots {
                 System.out.println();
                 //Runtime.getRuntime().exec("cls");
             }
+	    System.out.println("Printing final path");
+	    for(i=0;i<s;i++)
+	    {
+		    
+                Point pl1, pl2;
+                if(i < player1.size())
+                    pl1 = player1.get(i);
+                else
+                    pl1 = player1.get(player1.size() - 1);
+                if(i < player2.size())
+                    pl2 = player2.get(i);
+                else
+                    pl2 = player2.get(player2.size() - 1);
+		System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl2.c +"> at step " + i );
+		System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
+	    }
         }
         catch(Exception e) {}
     }
