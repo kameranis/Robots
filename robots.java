@@ -65,7 +65,7 @@ class Interest implements Comparable<Interest> {
         if((i=this.heur-a.heur)!=0) return (int) i;
         else if((i=this.dist-a.dist)!=0) return (int) i;
         else if((i=this.pos.x-a.pos.x)!=0) return (int) i;
-        else return this.pos.y - a.pos.y;
+        else return this.pos.y-a.pos.y;
     }
 
     @Override
@@ -88,23 +88,29 @@ class Interest implements Comparable<Interest> {
         ArrayList<Interest> ret = new ArrayList<Interest>();
         if(pos.x+1 < N && board[this.pos.x+1][this.pos.y] != 'x') {
             Point n = Point(pos.x+1, pos.y);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
+            ret.push(Interest(n, d+1, d+1+n.dist(finish), this));
         }
         if(pos.y+1 < M && board[this.pos.x][this.pos.y+1] != 'x') {
             Point n = Point(pos.x, pos.y+1);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
+            ret.push(Interest(n, d+1, d+1+n.dist(finish), this));
         }
         if(pos.x > 0 && board[this.pos.x-1][this.pos.y] != 'x') {
             Point n = Point(pos.x-1, pos.y);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
+            ret.push(Interest(n, d+1, d+1+n.dist(finish), this));
         }
         if(pos.y > 0 && board[this.pos.x][this.pos.y-1] != 'x') {
             Point n = Point(pos.x, pos.y-1);
-            ret.push(Interest(n, d+1, n.dist(finish), this));
+            ret.push(Interest(n, d+1, d+1+n.dist(finish), this));
         }
         return ret;
     }
 }
+
+
+public class d
+
+
+
 
 /* Main class */
 public class Robots {
@@ -112,30 +118,38 @@ public class Robots {
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
 
-   
+    static int M, N;
+    static char[][] board;
 
-
-    public static interest Astar(Point start,Point fin, boolean player){
-            PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
+    public static interest Astar(Point start, Point fin, ArrayList<Point> player){
+        PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
 	    TreeSet<Point> closed= new TreeSet<Point>();
 	    Interest start_i= new Interest(start,0,start.dist(fin),null);
 	    queue.add(start_i);
 	    while(!queue.isEmpty())
 	    {
-		interest curr = queue.peek();
-		queue.remove(curr);
-		if(curr==fin)
-			return fin;
-		if(closed.contains(curr))
-			continue;
-		ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
-		for(Interest next : next_moves)
-		{
-			if(closed.contains(next.pos))
-				continue;
-			queue.add(next);
-
-		}
+		    Interest curr = queue.poll();
+		    if(curr.pos.equals(fin))
+			    return curr;
+    		if(closed.contains(curr))
+    			continue;
+	    	ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
+		    for(Interest next : next_moves)
+		    {
+    			if(closed.contains(next.pos))
+    				continue;
+                if(player != null)
+                {
+                    if(next.dist > player.size() || !player[next.dist].equals(next.pos))
+                        queue.add(next)
+                    else
+                    {
+                       queue.add(Interest(next.pos, next.dist+1, next.heur+1, next.father);
+                    }
+                }
+                else
+        			queue.add(next);
+    		}
 	    }
     }
 
@@ -174,9 +188,27 @@ public class Robots {
                     board[i][j] = in.next().trim().charAt(0);
             }
 
+            ArrayList<Point> player1 = backtrace(A_star(first, meet[0], null));
 
+            for(i = 1; i < meet_points + 1; i++) {
+                player1.addall(backtrace(A_star(meet[i-1], meet[i], null)));
+            }
 
-
+            ArrayList<Point> player2 = backtrace(A_star(second, meet[0], player1));
+            
+            for(i = 1; i < meet_points + 1; i++) {
+                player2.addall(backtrace(A_star(meet[i-1], meet[i], player1.subList(player2.size(), player1.size()-1))));
+            }
+            if(player1.size() > player2.size()) 
+            {
+                player1.remove(player1.size()-1);
+            }
+            else
+            {
+                player2.remove(player2.size()-1);
+            }
+            print_route(player1, player2);
+        }
 
 	}
 
