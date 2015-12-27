@@ -246,21 +246,21 @@ public static void main(String[] args) {
     try {
         Scanner in = new Scanner(System.in);
         // Read dimensions
-        M = in.nextInt();
         N = in.nextInt();
+        M = in.nextInt();
         int r, c;
         // Get starting points
-        c = in.nextInt();
         r = in.nextInt();
-        Point first = new Point(r, c);
         c = in.nextInt();
+        Point first = new Point(r-1, c-1);
         r = in.nextInt();
-        Point second = new Point(r, c);
+        c = in.nextInt();
+        Point second = new Point(r-1, c-1);
 
         // Get meeting point
-        c = in.nextInt();
         r = in.nextInt();
-        Point last = new Point(r, c);
+        c = in.nextInt();
+        Point last = new Point(r-1, c-1);
 
         // Get intermediate points
         int meet_points = in.nextInt();
@@ -268,9 +268,9 @@ public static void main(String[] args) {
 
         int i, j;
         for(i = 0; i < meet_points; i++) {
-            c = in.nextInt();
             r = in.nextInt();
-            meet[i] = new Point(c,r);
+            c = in.nextInt();
+            meet[i] = new Point(r-1,c-1);
         }
 
         meet[meet_points] = last;
