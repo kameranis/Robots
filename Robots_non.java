@@ -7,7 +7,7 @@
  */
 
 import java.util.*;
-import java.io.File;
+import java.io.*;
 import java.io.FileNotFoundException;
 
 // Used to save bats, walls and spider
@@ -23,7 +23,7 @@ class Point  implements Comparable<Point> {
 
     // Returns the distance between this and p
     public int dist(Point p) {
-        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5)* (Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5) ;
+        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+ 5)*(Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+5); 
     }
 
     @Override
@@ -111,7 +111,7 @@ public class Robots_non {
     static int M, N;
     static char[][] board;
 
-    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev){
+    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev) throws Exception{
         PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
         TreeSet<Point> closed= new TreeSet<Point>();
         Interest start_i= new Interest(start,0,start.dist(fin),null);
@@ -127,8 +127,9 @@ public class Robots_non {
             Interest curr = queue.poll();
             if(curr.pos.equals(fin))
                 return curr;
-            if(closed.contains(curr))
+            if(closed.contains(curr.pos))
                 continue;
+	    closed.add(curr.pos);
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
@@ -138,7 +139,7 @@ public class Robots_non {
                     continue;
                 if(player != null)
                 {
-                    if(next.dist > size_t || !player[(next.dist)].equals(next.pos))
+                    if(next.dist >= size_t || !player[(next.dist)].equals(next.pos))
                         queue.add(next);
                     else
                     {
@@ -150,8 +151,10 @@ public class Robots_non {
                     queue.add(next);
             }
         }
+	System.out.println(fin.c + " " + fin.r);
         System.out.println("You guys really fucked it up");
-        return null;
+	throw new Exception();
+      //  return null;
     }
 
     public static ArrayList<Point> backtrace(Interest a)
@@ -174,7 +177,7 @@ public class Robots_non {
         try {
             int s = max(player1.size(), player2.size());
             int i;
-            for(i = 0; i < s; i++)
+ /*           for(i = 0; i < s; i++)
             {
                 Point pl1, pl2;
                 if(i < player1.size())
@@ -186,7 +189,7 @@ public class Robots_non {
                 else
                     pl2 = player2.get(player2.size() - 1);
                 int n, m;
-                for(n = 0; n < N; n++) {
+               for(n = 0; n < N; n++) {
                     for(m = 0; m < M; m++) {
                         Point c = new Point(n, m);
                         if(pl1.equals(c))
@@ -201,7 +204,7 @@ public class Robots_non {
                 Thread.sleep(100);
                 System.out.println();
                 //Runtime.getRuntime().exec("cls");
-            }
+            }*/
 	    System.out.println("Printing final path");
 	    for(i=0;i<s;i++)
 	    {
@@ -289,7 +292,8 @@ public class Robots_non {
         // If file is not valid
         catch(Exception e)
         {
-		System.out.println("An exception has raised");
+		e.printStackTrace();
+		System.out.println("Exception is raised");
         }
     }
 }       
