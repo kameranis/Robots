@@ -111,17 +111,17 @@ public class Robots {
     static int M, N;
     static char[][] board;
 
-    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev){
+    public static Interest Astar(Point start, Point fin, Point[] player, int size, int prev){
         PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
-        TreeSet<Point> closed= new TreeSet<Point>();
-        Interest start_i= new Interest(start,0,start.dist(fin),null);
+        TreeSet<Point> closed = new TreeSet<Point>();
+        Interest start_i = new Interest(start, 0, start.dist(fin), null);
         queue.add(start_i);
-	int size_t =size;
-	String Name;
-	if(player==null)
-		Name=new String("Player 1 ");
-	else{
-		Name=new String("Player 2 ");}
+        int size_t =size;
+        String Name;
+        if(player==null)
+            Name=new String("Player 1 ");
+        else
+            Name=new String("Player 2 ");
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();
@@ -132,8 +132,8 @@ public class Robots {
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
-		int pos_print = next.dist + prev;
-		System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
+                int pos_print = next.dist + prev;
+                System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
                 if(closed.contains(next.pos))
                     continue;
                 if(player != null)
@@ -142,7 +142,7 @@ public class Robots {
                         queue.add(next);
                     else
                     {
-			System.out.println("** Conflict ** , thinking about stall or another move");
+                        System.out.println("** Conflict ** , thinking about stall or another move");
                         queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
                     }
                 }
@@ -171,55 +171,52 @@ public class Robots {
 
     static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)
     {
-        try {
-            int s = max(player1.size(), player2.size());
-            int i;
-            for(i = 0; i < s; i++)
-            {
-                Point pl1, pl2;
-                if(i < player1.size())
-                    pl1 = player1.get(i);
-                else
-                    pl1 = player1.get(player1.size() - 1);
-                if(i < player2.size())
-                    pl2 = player2.get(i);
-                else
-                    pl2 = player2.get(player2.size() - 1);
-                int n, m;
-                for(n = 0; n < N; n++) {
-                    for(m = 0; m < M; m++) {
-                        Point c = new Point(n, m);
-                        if(pl1.equals(c))
-                            System.out.print(1);
-                        else if(pl2.equals(c))
-                            System.out.print(2);
-                        else
-                            System.out.print(board[n][m]);
-                    }
-                    System.out.println();
+        int s = max(player1.size(), player2.size());
+        int i;
+        for(i = 0; i < s; i++)
+        {
+            Point pl1, pl2;
+            if(i < player1.size())
+                pl1 = player1.get(i);
+            else
+                pl1 = player1.get(player1.size() - 1);
+            if(i < player2.size())
+                pl2 = player2.get(i);
+            else
+                pl2 = player2.get(player2.size() - 1);
+            int n, m;
+            for(n = 0; n < N; n++) {
+                for(m = 0; m < M; m++) {
+                    Point c = new Point(n, m);
+                    if(pl1.equals(c))
+                        System.out.print(1);
+                    else if(pl2.equals(c))
+                        System.out.print(2);
+                    else
+                        System.out.print(board[n][m]);
                 }
-                Thread.sleep(100);
                 System.out.println();
-                //Runtime.getRuntime().exec("cls");
             }
-	    System.out.println("Printing final path");
-	    for(i=0;i<s;i++)
-	    {
-		    
-                Point pl1, pl2;
-                if(i < player1.size())
-                    pl1 = player1.get(i);
-                else
-                    pl1 = player1.get(player1.size() - 1);
-                if(i < player2.size())
-                    pl2 = player2.get(i);
-                else
-                    pl2 = player2.get(player2.size() - 1);
-		System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
-		System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
-	    }
+            Thread.sleep(100);
+            System.out.println();
+            //Runtime.getRuntime().exec("cls");
         }
-        catch(Exception e) {}
+        System.out.println("Printing final path");
+        for(i=0;i<s;i++)
+        {
+
+            Point pl1, pl2;
+            if(i < player1.size())
+                pl1 = player1.get(i);
+            else
+                pl1 = player1.get(player1.size() - 1);
+            if(i < player2.size())
+                pl2 = player2.get(i);
+            else
+                pl2 = player2.get(player2.size() - 1);
+            System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
+            System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
+        }
     }
 
     public static void main(String[] args) {
@@ -272,7 +269,7 @@ public class Robots {
             ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
             for(i = 1; i < meet_points + 1; i++) {
-		ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
+                ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
                 player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
             }
             if(player1.size() > player2.size()) 
@@ -289,7 +286,7 @@ public class Robots {
         // If file is not valid
         catch(Exception e)
         {
-		System.out.println("Exception is raised");
+            System.out.println("Exception is raised");
         }
     }
 }       
