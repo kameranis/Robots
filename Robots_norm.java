@@ -253,10 +253,10 @@ public static void main(String[] args) {
         // Get starting points
         r = in.nextInt();
         c = in.nextInt();
-        Point first = new Point(r-1, c-1);
+        final Point first = new Point(r-1, c-1);
         r = in.nextInt();
         c = in.nextInt();
-        Point second = new Point(r-1, c-1);
+        final Point second = new Point(r-1, c-1);
 
         // Get meeting point
         r = in.nextInt();
