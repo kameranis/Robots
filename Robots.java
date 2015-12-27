@@ -29,9 +29,11 @@ class Point  implements Comparable<Point> {
     @Override
     public int compareTo(Point a)
     { 
-        int i;
-        if((i=this.r-a.r)!=0) return i;
-        else return this.c - a.c;
+	    if(this.r == a.r) return this.c -a.c;
+	    return this.r - a.r;
+        //int i;
+     //   if((i=this.r-a.r)!=0) return i;
+       // else return this.c - a.c;
     }
 
     @Override
@@ -58,10 +60,7 @@ class Interest implements Comparable<Interest> {
     public int compareTo(Interest a)
     { 
         double i;
-        if((i=this.heur-a.heur)!=0) return (int) i;
-        else if((i=this.dist-a.dist)!=0) return (int) i;
-        else if((i=this.pos.r-a.pos.r)!=0) return (int) i;
-        else return this.pos.c-a.pos.c;
+	return this.heur - a.heur;
     }
 
     @Override
@@ -134,7 +133,7 @@ public class Robots {
             for(Interest next : next_moves)
             {
 		int pos_print = next.dist + prev;
-		System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
+	//	System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
                 if(closed.contains(next.pos))
                     continue;
                 if(player != null)
@@ -144,14 +143,14 @@ public class Robots {
                     else
                     {
 			System.out.println("** Conflict ** , thinking about stall or another move");
-                        queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
+                        queue.add(new Interest(curr.pos, curr.dist+1, curr.heur+1, next.father));
                     }
                 }
                 else
                     queue.add(next);
             }
         }
-	System.out.println(fin.c + " " + fin.r);
+	System.out.println(fin.c + " " + fin.r + " " );
         System.out.println("You guys really fucked it up");
 	throw new Exception();
       //  return null;

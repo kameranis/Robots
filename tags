@@ -1,19 +1,89 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 admissible	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^int admissible(point from, point to) {$/;"	f	language:C++
+Astar	/home/zinc/ntua/ai/Robots/Robots.java	/^    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev) throws Exception{$/;"	m	language:Java	class:Robots
+Astar	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev) throws Exception{$/;"	m	language:Java	class:Robots_non
+Astar	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public static Interest Astar(Point start, Point fin, Point[] player, int size, int prev) throws Exception{$/;"	m	language:Java	class:Robots_norm
 A_star	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^interest A_star(point from, point end,bool player) {$/;"	f	language:C++
+backtrace	/home/zinc/ntua/ai/Robots/Robots.java	/^    public static ArrayList<Point> backtrace(Interest a)$/;"	m	language:Java	class:Robots
+backtrace	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public static ArrayList<Point> backtrace(Interest a)$/;"	m	language:Java	class:Robots_non
+backtrace	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public static ArrayList<Point> backtrace(Interest a)$/;"	m	language:Java	class:Robots_norm
+board	/home/zinc/ntua/ai/Robots/Robots.java	/^    static char[][] board;$/;"	f	language:Java	class:Robots
+board	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static char[][] board;$/;"	f	language:Java	class:Robots_non
+board	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static char[][] board;$/;"	f	language:Java	class:Robots_norm
+c	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int c, r;$/;"	f	language:Java	class:Point
+c	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int c, r;$/;"	f	language:Java	class:Point
+c	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int c, r;$/;"	f	language:Java	class:Point
 ClearScreen	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^void ClearScreen() {$/;"	f	language:C++
+compareTo	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int compareTo(Interest a)$/;"	m	language:Java	class:Interest
+compareTo	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int compareTo(Point a)$/;"	m	language:Java	class:Point
+compareTo	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int compareTo(Interest a)$/;"	m	language:Java	class:Interest
+compareTo	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int compareTo(Point a)$/;"	m	language:Java	class:Point
+compareTo	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int compareTo(Interest a)$/;"	m	language:Java	class:Interest
+compareTo	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int compareTo(Point a)$/;"	m	language:Java	class:Point
 cost	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int cost;$/;"	m	language:C++	class:interest	file:
 current	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        point current;$/;"	m	language:C++	class:interest	file:
+dist	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int dist(Point p) {$/;"	m	language:Java	class:Point
+dist	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int dist;$/;"	f	language:Java	class:Interest
+dist	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int dist(Point p) {$/;"	m	language:Java	class:Point
+dist	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int dist;$/;"	f	language:Java	class:Interest
+dist	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int dist(Point p) {$/;"	m	language:Java	class:Point
+dist	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int dist;            \/\/ Distance so far$/;"	f	language:Java	class:Interest
 dist	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int dist() {$/;"	f	language:C++	class:point
 dist	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int dist(point const & other) {$/;"	f	language:C++	class:point
+equals	/home/zinc/ntua/ai/Robots/Robots.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Interest
+equals	/home/zinc/ntua/ai/Robots/Robots.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Point
+equals	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Interest
+equals	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Point
+equals	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Interest
+equals	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public boolean equals(Object other)$/;"	m	language:Java	class:Point
 estimated	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int estimated;$/;"	m	language:C++	class:interest	file:
 estimated_function	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	int *estimated_function(point,point)=nullptr;$/;"	p	language:C++	class:interest	file:
+father	/home/zinc/ntua/ai/Robots/Robots.java	/^    public Interest father;$/;"	f	language:Java	class:Interest
+father	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public Interest father;$/;"	f	language:Java	class:Interest
+father	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public Interest father;     \/\/ Previous step$/;"	f	language:Java	class:Interest
 findcmp	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^class findcmp{$/;"	c	language:C++	file:
 goal	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	point goal;$/;"	m	language:C++	class:interest	file:
+heur	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int heur;$/;"	f	language:Java	class:Interest
+heur	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int heur;$/;"	f	language:Java	class:Interest
+heur	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int heur;            \/\/ Heuristic distance to be travelled$/;"	f	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots.java	/^    Interest() { pos = new Point(); dist = 0; heur = 0; father = null; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots.java	/^    Interest(Point p, int d, int h, Interest f) { pos = p; dist = d; heur = h; father = f; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots.java	/^class Interest implements Comparable<Interest> {$/;"	c	language:Java
+Interest	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    Interest() { pos = new Point(); dist = 0; heur = 0; father = null; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    Interest(Point p, int d, int h, Interest f) { pos = p; dist = d; heur = h; father = f; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots_non.java	/^class Interest implements Comparable<Interest> {$/;"	c	language:Java
+Interest	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    Interest() { pos = new Point(); dist = 0; heur = 0; father = null; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    Interest(Point p, int d, int h, Interest f) { pos = p; dist = d; heur = h; father = f; }$/;"	m	language:Java	class:Interest
+Interest	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^class Interest implements Comparable<Interest> {$/;"	c	language:Java
 interest	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        interest(int (*estimator) (point,point),point curr,point goal) {$/;"	f	language:C++	class:interest
 interest	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        interest(interest *p, point curr) {$/;"	f	language:C++	class:interest
 interest	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^class interest {$/;"	c	language:C++	file:
+M	/home/zinc/ntua/ai/Robots/Robots.java	/^    static int M, N;$/;"	f	language:Java	class:Robots
+M	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static int M, N;$/;"	f	language:Java	class:Robots_non
+M	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static int M, N;$/;"	f	language:Java	class:Robots_norm
+main	/home/zinc/ntua/ai/Robots/Robots.java	/^    public static void main(String[] args) {$/;"	m	language:Java	class:Robots
+main	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public static void main(String[] args) {$/;"	m	language:Java	class:Robots_non
+main	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^public static void main(String[] args) {$/;"	m	language:Java	class:Robots_norm
+main	/home/zinc/ntua/ai/Robots/test.cpp	/^int main(){$/;"	f	language:C++
 main	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^int main() {$/;"	f	language:C++
+max	/home/zinc/ntua/ai/Robots/Robots.java	/^    int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Point
+max	/home/zinc/ntua/ai/Robots/Robots.java	/^    static int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Robots
+max	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Point
+max	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Robots_non
+max	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Point
+max	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static int max(int a, int b) { return a > b ? a : b; }$/;"	m	language:Java	class:Robots_norm
+min	/home/zinc/ntua/ai/Robots/Robots.java	/^    int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Point
+min	/home/zinc/ntua/ai/Robots/Robots.java	/^    static int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Robots
+min	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Point
+min	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Robots_non
+min	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Point
+min	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static int min(int a, int b) { return a < b ? a : b; }$/;"	m	language:Java	class:Robots_norm
+N	/home/zinc/ntua/ai/Robots/Robots.java	/^    static int M, N;$/;"	f	language:Java	class:Robots
+N	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static int M, N;$/;"	f	language:Java	class:Robots_non
+N	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static int M, N;$/;"	f	language:Java	class:Robots_norm
+next	/home/zinc/ntua/ai/Robots/Robots.java	/^    public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {$/;"	m	language:Java	class:Interest
+next	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {$/;"	m	language:Java	class:Interest
+next	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {$/;"	m	language:Java	class:Interest
 next	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	vector<interest*> next()$/;"	f	language:C++	class:interest
 operator ()	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	bool operator() (const &interest  lhs, const &interest rhs)$/;"	f	language:C++	class:findcmp	file:
 operator ()	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	bool operator() (const &interest  lhs, const &interest rhs)$/;"	f	language:C++	class:setcmp	file:
@@ -22,10 +92,31 @@ operator <	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	bool operator<(const poi
 operator ==	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	bool operator== (const interest &c) const {$/;"	f	language:C++	class:interest
 operator ==	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^	bool operator==(const point &c) const {$/;"	f	language:C++	class:point
 parent	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        interest *parent;$/;"	m	language:C++	class:interest	file:
+Point	/home/zinc/ntua/ai/Robots/Robots.java	/^    Point() { c = r = 0; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots.java	/^    Point(int a, int b) { r = a; c = b; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots.java	/^class Point  implements Comparable<Point> {$/;"	c	language:Java
+Point	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    Point() { c = r = 0; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    Point(int a, int b) { r = a; c = b; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots_non.java	/^class Point  implements Comparable<Point> {$/;"	c	language:Java
+Point	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    Point() { c = r = 0; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    Point(int a, int b) { r = a; c = b; }$/;"	m	language:Java	class:Point
+Point	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^class Point  implements Comparable<Point> {$/;"	c	language:Java
 point	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        point() {}$/;"	f	language:C++	class:point
 point	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        point(int a, int b) {$/;"	f	language:C++	class:point
 point	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^class point {$/;"	c	language:C++	file:
+pos	/home/zinc/ntua/ai/Robots/Robots.java	/^    public Point pos;$/;"	f	language:Java	class:Interest
+pos	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public Point pos;$/;"	f	language:Java	class:Interest
+pos	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public Point pos;           \/\/ Where it is$/;"	f	language:Java	class:Interest
+print_route	/home/zinc/ntua/ai/Robots/Robots.java	/^    static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)$/;"	m	language:Java	class:Robots
+print_route	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)$/;"	m	language:Java	class:Robots_non
+print_route	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)$/;"	m	language:Java	class:Robots_norm
 print_table	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^void print_table(char table[], state *curr, int N, int M) {$/;"	f	language:C++
+r	/home/zinc/ntua/ai/Robots/Robots.java	/^    public int c, r;$/;"	f	language:Java	class:Point
+r	/home/zinc/ntua/ai/Robots/Robots_non.java	/^    public int c, r;$/;"	f	language:Java	class:Point
+r	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^    public int c, r;$/;"	f	language:Java	class:Point
+Robots	/home/zinc/ntua/ai/Robots/Robots.java	/^public class Robots {$/;"	c	language:Java
+Robots_non	/home/zinc/ntua/ai/Robots/Robots_non.java	/^public class Robots_non {$/;"	c	language:Java
+Robots_norm	/home/zinc/ntua/ai/Robots/Robots_norm.java	/^public class Robots_norm {$/;"	c	language:Java
 setcmp	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^class setcmp{$/;"	c	language:C++	file:
 x	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int x, y;$/;"	m	language:C++	class:point	file:
 y	/home/zinc/ntua/ai/Robots/tiny_robots.cpp	/^        int x, y;$/;"	m	language:C++	class:point	file:
