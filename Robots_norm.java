@@ -27,11 +27,9 @@ class Point  implements Comparable<Point> {
     @Override
     public int compareTo(Point a)
     { 
-	    if(this.r == a.r) return this.c -a.c;
-	    return this.r - a.r;
-        //int i;
-     //   if((i=this.r-a.r)!=0) return i;
-       // else return this.c - a.c;
+        int i;
+        if((i=this.r-a.r)!=0) return i;
+        else return this.c - a.c;
     }
 
     @Override
@@ -58,7 +56,10 @@ class Interest implements Comparable<Interest> {
     public int compareTo(Interest a)
     { 
         double i;
-	return this.heur - a.heur;
+        if((i=this.heur-a.heur)!=0) return (int) i;
+        else if((i=this.dist-a.dist)!=0) return (int) i;
+        else if((i=this.pos.r-a.pos.r)!=0) return (int) i;
+        else return this.pos.c-a.pos.c;
     }
 
     @Override
@@ -109,7 +110,7 @@ class Interest implements Comparable<Interest> {
 }
 
 /* Main class */
-public class Robots {
+public class Robots_norm {
 
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
@@ -250,17 +251,17 @@ public static void main(String[] args) {
         N = in.nextInt();
         int r, c;
         // Get starting points
-        c = in.nextInt();
         r = in.nextInt();
-        Point first = new Point(r, c);
         c = in.nextInt();
+        Point first = new Point(r-1, c-1);
         r = in.nextInt();
-        Point second = new Point(r, c);
+        c = in.nextInt();
+        Point second = new Point(r-1, c-1);
 
         // Get meeting point
-        c = in.nextInt();
         r = in.nextInt();
-        Point last = new Point(r, c);
+        c = in.nextInt();
+        Point last = new Point(r-1, c-1);
 
         // Get intermediate points
         int meet_points = in.nextInt();
@@ -268,13 +269,13 @@ public static void main(String[] args) {
 
         int i, j;
         for(i = 0; i < meet_points; i++) {
-            c = in.nextInt();
             r = in.nextInt();
-            meet[i] = new Point(c,r);
+            c = in.nextInt();
+            meet[i] = new Point(c-1,r-1);
         }
 
-        meet[meet_points] = last;
 
+        meet[meet_points] = last;
         // Get board
         board = new char[N][M];
         for(i = 0; i < N; i++) {
@@ -287,13 +288,23 @@ public static void main(String[] args) {
                 throw new IOException();
             }
         }
-
+	
+	Arrays.sort(meet,0,meet.length-2,new Comparator<Point>() {
+			public int compare(Point a , Point b)
+			{
+				return first.dist(a) - first.dist(b);
+			}
+	});
         ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
-
         for(i = 1; i < meet_points + 1; i++) {
             player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
         }
-
+	Arrays.sort(meet,0,meet.length-2,new Comparator<Point>() {
+			public int compare(Point a , Point b)
+			{
+				return second.dist(a) - second.dist(b);
+			}
+	});
         ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
         for(i = 1; i < meet_points + 1; i++) {
