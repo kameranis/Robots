@@ -7,7 +7,7 @@
  */
 
 import java.util.*;
-import java.io.File;
+import java.io.*;
 import java.io.FileNotFoundException;
 
 // Used to save bats, walls and spider
@@ -111,7 +111,7 @@ public class Robots {
     static int M, N;
     static char[][] board;
 
-    public static Interest Astar(Point start, Point fin, Point[] player, int size, int prev){
+    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev) throws Exception{
         PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
         TreeSet<Point> closed = new TreeSet<Point>();
         Interest start_i = new Interest(start, 0, start.dist(fin), null);
@@ -127,8 +127,9 @@ public class Robots {
             Interest curr = queue.poll();
             if(curr.pos.equals(fin))
                 return curr;
-            if(closed.contains(curr))
+            if(closed.contains(curr.pos))
                 continue;
+            closed.add(curr.pos);
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
@@ -138,7 +139,7 @@ public class Robots {
                     continue;
                 if(player != null)
                 {
-                    if(next.dist > size_t || !player[(next.dist)].equals(next.pos))
+                    if(next.dist >= size_t || !player[(next.dist)].equals(next.pos))
                         queue.add(next);
                     else
                     {
@@ -150,8 +151,10 @@ public class Robots {
                     queue.add(next);
             }
         }
+        System.out.println(fin.c + " " + fin.r);
         System.out.println("You guys really fucked it up");
-        return null;
+        throw new Exception();
+        //  return null;
     }
 
     public static ArrayList<Point> backtrace(Interest a)
@@ -171,52 +174,57 @@ public class Robots {
 
     static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)
     {
-        int s = max(player1.size(), player2.size());
-        int i;
-        for(i = 0; i < s; i++)
-        {
-            Point pl1, pl2;
-            if(i < player1.size())
-                pl1 = player1.get(i);
-            else
-                pl1 = player1.get(player1.size() - 1);
-            if(i < player2.size())
-                pl2 = player2.get(i);
-            else
-                pl2 = player2.get(player2.size() - 1);
-            int n, m;
-            for(n = 0; n < N; n++) {
-                for(m = 0; m < M; m++) {
-                    Point c = new Point(n, m);
-                    if(pl1.equals(c))
-                        System.out.print(1);
-                    else if(pl2.equals(c))
-                        System.out.print(2);
-                    else
-                        System.out.print(board[n][m]);
-                }
-                System.out.println();
-            }
-            Thread.sleep(100);
-            System.out.println();
+        try {
+            int s = max(player1.size(), player2.size());
+            int i;
+            /*           for(i = 0; i < s; i++)
+                         {
+                         Point pl1, pl2;
+                         if(i < player1.size())
+                         pl1 = player1.get(i);
+                         else
+                         pl1 = player1.get(player1.size() - 1);
+                         if(i < player2.size())
+                         pl2 = player2.get(i);
+                         else
+                         pl2 = player2.get(player2.size() - 1);
+                         int n, m;
+                         for(n = 0; n < N; n++) {
+                         for(m = 0; m < M; m++) {
+                         Point c = new Point(n, m);
+                         if(pl1.equals(c))
+                         System.out.print(1);
+                         else if(pl2.equals(c))
+                         System.out.print(2);
+                         else
+                         System.out.print(board[n][m]);
+                         }
+                         System.out.println();
+                         }
+                         System.out.println();
+                         }
+                         Thread.sleep(100);
+                         System.out.println();
             //Runtime.getRuntime().exec("cls");
+            }*/
+            System.out.println("Printing final path");
+            for(i=0;i<s;i++)
+            {
+                Point pl1, pl2;
+                if(i < player1.size())
+                    pl1 = player1.get(i);
+                else
+                    pl1 = player1.get(player1.size() - 1);
+                if(i < player2.size())
+                    pl2 = player2.get(i);
+                else
+                    pl2 = player2.get(player2.size() - 1);
+                System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
+                System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
+            }
         }
-        System.out.println("Printing final path");
-        for(i=0;i<s;i++)
-        {
-
-            Point pl1, pl2;
-            if(i < player1.size())
-                pl1 = player1.get(i);
-            else
-                pl1 = player1.get(player1.size() - 1);
-            if(i < player2.size())
-                pl2 = player2.get(i);
-            else
-                pl2 = player2.get(player2.size() - 1);
-            System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
-            System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
-        }
+        catch(Exception e)
+        {}
     }
 
     public static void main(String[] args) {
@@ -286,6 +294,7 @@ public class Robots {
         // If file is not valid
         catch(Exception e)
         {
+            e.printStackTrace();
             System.out.println("Exception is raised");
         }
     }
