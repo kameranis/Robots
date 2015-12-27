@@ -21,7 +21,7 @@ class Point  implements Comparable<Point> {
 
     // Returns the distance between this and p
     public int dist(Point p) {
-        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+ 5)*(Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+5); 
+        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5)*(Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5); 
     }
 
     @Override
@@ -108,7 +108,7 @@ class Interest implements Comparable<Interest> {
 }
 
 /* Main class */
-public class Robots {
+public class Robots_non_ad {
 
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
