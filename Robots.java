@@ -288,16 +288,21 @@ public static void main(String[] args) {
         }
         
         
-        ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
+        ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null, 0, 0));
 
         for(i = 1; i < meet_points + 1; i++) {
-            player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
+            player1.addAll(backtrace(Astar(meet[i-1], meet[i], null, 0, player1.size())));
         }
 
         ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
         for(i = 1; i < meet_points + 1; i++) {
-            ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
+            int bound;
+            if(player2.size() < player1.size())
+                bound = player2.size();
+            else
+                bound = player1.size()-1;
+            ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(bound, player1.size()-1)));
             player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
         }
         if(player1.size() > player2.size()) 
