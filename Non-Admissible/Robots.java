@@ -21,7 +21,7 @@ class Point  implements Comparable<Point> {
 
     // Returns the distance between this and p
     public int dist(Point p) {
-        return Math.abs(this.r-p.r) + Math.abs(this.c-p.c); 
+        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5)*(Math.abs(this.r-p.r) + Math.abs(this.c-p.c) + 5);
     }
 
     @Override
