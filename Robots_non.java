@@ -47,10 +47,6 @@ class Point  implements Comparable<Point> {
     }
 }
 
-/* This class is used by the priority queue to determine the next one
- * in Djikstra.
- * Holds the id number of the creature and its current tentative distance
- * in respect to (0,0) */
 
 class Interest implements Comparable<Interest> {
     public Point pos;
