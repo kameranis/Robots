@@ -21,15 +21,14 @@ class Point  implements Comparable<Point> {
 
     // Returns the distance between this and p
     public int dist(Point p) {
-        return Math.abs(this.r-p.r) + Math.abs(this.c-p.c); 
+        return (Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+ 5)*(Math.abs(this.r-p.r) + Math.abs(this.c-p.c)+5); 
     }
 
     @Override
     public int compareTo(Point a)
     { 
-        int i;
-        if((i=this.r-a.r)!=0) return i;
-        else return this.c - a.c;
+	    if(this.r == a.r) return this.c -a.c;
+	    return this.r - a.r;
     }
 
     @Override
@@ -55,11 +54,10 @@ class Interest implements Comparable<Interest> {
     @Override
     public int compareTo(Interest a)
     { 
-        double i;
-        if((i=this.heur-a.heur)!=0) return (int) i;
-        else if((i=this.dist-a.dist)!=0) return (int) i;
-        else if((i=this.pos.r-a.pos.r)!=0) return (int) i;
-        else return this.pos.c-a.pos.c;
+        int i;
+	    if((i = this.heur - a.heur) != 0) return i;
+        if((i = this.dist - a.dist) != 0) return i;
+        else return this.pos.compareTo(a.pos);
     }
 
     @Override
@@ -110,13 +108,14 @@ class Interest implements Comparable<Interest> {
 }
 
 /* Main class */
-public class Robots_norm {
+public class Robots {
 
     static int min(int a, int b) { return a < b ? a : b; }
     static int max(int a, int b) { return a > b ? a : b; }
 
     static int M, N;
     static char[][] board;
+    static int count;
 
     // Given a starting and ending point, returns the last Interest of the path
     // Usually it would be used in conjuction to backtrace
@@ -125,7 +124,6 @@ public class Robots_norm {
         TreeSet<Point> closed = new TreeSet<Point>();
         Interest start_i = new Interest(start, 0, start.dist(fin), null);
         queue.add(start_i);
-        int size_t = size;
         String Name;
         if(player == null)
             Name = new String("Player 1 ");
@@ -134,33 +132,31 @@ public class Robots_norm {
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();       // Get next element
-            System.out.println(Name + "considering new posisition at<" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
+            count++;
+            // System.out.println(Name + "considering new posisition <" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
             if(curr.pos.equals(fin))            // Base case
                 return curr;
             if(closed.contains(curr.pos))       // No rechecks
                 continue;
             closed.add(curr.pos);
 
-            ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
-            for(Interest next : next_moves)
+            ArrayList<Interest> next_moves = curr.next(board,N,M,fin);
+            for(Interest next : next_moves)     // For every move
             {
                 int pos_print = next.dist + prev;
-                if(closed.contains(next.pos))
+                if(closed.contains(next.pos))   // No rechecks
                     continue;
-                if(player != null)
-                {
-                    if(next.dist >= size || !player[(next.dist)].equals(next.pos))
-                        queue.add(next);
-                    else
-                    {
-                        System.out.println("** Conflict ** , thinking about stall or another move");
-                        queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
-                    }
-                }
-                else
+                if(player == null || next.dist >= size || !player[(next.dist)].equals(next.pos))
                     queue.add(next);
+                else        // Collision
+                {
+                    // System.out.println("** Conflict ** , thinking about stall or another move");
+                    queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
+                }
             }
         }
+        // Should not get here
+        // It means that we couldn't reach teh destination
         System.out.println(closed.size());
         System.out.println(fin.c + " " + fin.r);
         System.out.println("You guys really fucked it up");
@@ -168,6 +164,7 @@ public class Robots_norm {
         //  return null;
     }
 
+    // Takes the end point of a path and returns the whole path in an ArrayList
     public static ArrayList<Point> backtrace(Interest a)
     {
         ArrayList<Point> val = new ArrayList<Point>();
@@ -183,43 +180,14 @@ public class Robots_norm {
         return val;
     }
 
+    // Prints the route of our two robots
     static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)
     {
         try {
             int s = max(player1.size(), player2.size());
             int i;
-            /*           for(i = 0; i < s; i++)
-                         {
-                         Point pl1, pl2;
-                         if(i < player1.size())
-                         pl1 = player1.get(i);
-                         else
-                         pl1 = player1.get(player1.size() - 1);
-                         if(i < player2.size())
-                         pl2 = player2.get(i);
-                         else
-                         pl2 = player2.get(player2.size() - 1);
-                         int n, m;
-                         for(n = 0; n < N; n++) {
-                         for(m = 0; m < M; m++) {
-                         Point c = new Point(n, m);
-                         if(pl1.equals(c))
-                         System.out.print(1);
-                         else if(pl2.equals(c))
-                         System.out.print(2);
-                         else"
-                         System.out.print(board[n][m]);
-                         }
-                         System.out.println();
-                         }
-                         System.out.println();
-                         }
-                         Thread.sleep(100);
-                         System.out.println();
-            //Runtime.getRuntime().exec("cls");
-            }*/
             System.out.println("Printing final path");
-            for(i=0;i<s;i++)
+            for(i=0; i<s; i++)
             {
                 Point pl1, pl2;
                 if(i < player1.size())
@@ -247,16 +215,16 @@ public static void main(String[] args) {
     try {
         Scanner in = new Scanner(System.in);
         // Read dimensions
-        M = in.nextInt();
         N = in.nextInt();
+        M = in.nextInt();
         int r, c;
         // Get starting points
         r = in.nextInt();
         c = in.nextInt();
-        final Point first = new Point(r-1, c-1);
+        Point first = new Point(r-1, c-1);
         r = in.nextInt();
         c = in.nextInt();
-        final Point second = new Point(r-1, c-1);
+        Point second = new Point(r-1, c-1);
 
         // Get meeting point
         r = in.nextInt();
@@ -271,16 +239,18 @@ public static void main(String[] args) {
         for(i = 0; i < meet_points; i++) {
             r = in.nextInt();
             c = in.nextInt();
-            meet[i] = new Point(c-1,r-1);
+            meet[i] = new Point(r-1,c-1);
         }
 
-
         meet[meet_points] = last;
+
         // Get board
         board = new char[N][M];
         for(i = 0; i < N; i++) {
             board[i] = in.next().toCharArray();
         }
+
+        // Check board and Meeting points are valid
         for(i = 0; i < meet_points + 1; i++)
         {
             if(board[meet[i].r][meet[i].c] == 'X') {
@@ -288,29 +258,28 @@ public static void main(String[] args) {
                 throw new IOException();
             }
         }
-	
-	Arrays.sort(meet,0,meet.length-2,new Comparator<Point>() {
-			public int compare(Point a , Point b)
-			{
-				return first.dist(a) - first.dist(b);
-			}
-	});
-        ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
+        
+        count = 0;
+        ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null, 0, 0));
+
         for(i = 1; i < meet_points + 1; i++) {
-            player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
+            player1.addAll(backtrace(Astar(meet[i-1], meet[i], null, 0, player1.size())));
         }
-	Arrays.sort(meet,0,meet.length-2,new Comparator<Point>() {
-			public int compare(Point a , Point b)
-			{
-				return second.dist(a) - second.dist(b);
-			}
-	});
+        System.out.println(count);
+
         ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
         for(i = 1; i < meet_points + 1; i++) {
-            ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
+            int bound;
+            if(player2.size() < player1.size())
+                bound = player2.size();
+            else
+                bound = player1.size()-1;
+            ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(bound, player1.size()-1)));
             player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
         }
+        System.out.println(count);
+        
         if(player1.size() > player2.size()) 
         {
             player1.remove(player1.size()-1);
@@ -319,7 +288,7 @@ public static void main(String[] args) {
         {
             player2.remove(player2.size()-1);
         }
-        print_route(player1, player2);
+        // print_route(player1, player2);
     }
 
     // If file is not valid

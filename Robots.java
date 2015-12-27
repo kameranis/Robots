@@ -115,6 +115,7 @@ public class Robots {
 
     static int M, N;
     static char[][] board;
+    static int count;
 
     // Given a starting and ending point, returns the last Interest of the path
     // Usually it would be used in conjuction to backtrace
@@ -131,7 +132,8 @@ public class Robots {
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();       // Get next element
-            System.out.println(Name + "considering new posisition <" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
+            count++;
+            // System.out.println(Name + "considering new posisition <" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
             if(curr.pos.equals(fin))            // Base case
                 return curr;
             if(closed.contains(curr.pos))       // No rechecks
@@ -148,7 +150,7 @@ public class Robots {
                     queue.add(next);
                 else        // Collision
                 {
-                    System.out.println("** Conflict ** , thinking about stall or another move");
+                    // System.out.println("** Conflict ** , thinking about stall or another move");
                     queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
                 }
             }
@@ -184,36 +186,6 @@ public class Robots {
         try {
             int s = max(player1.size(), player2.size());
             int i;
-            /*           for(i = 0; i < s; i++)
-                         {
-                         Point pl1, pl2;
-                         if(i < player1.size())
-                         pl1 = player1.get(i);
-                         else
-                         pl1 = player1.get(player1.size() - 1);
-                         if(i < player2.size())
-                         pl2 = player2.get(i);
-                         else
-                         pl2 = player2.get(player2.size() - 1);
-                         int n, m;
-                         for(n = 0; n < N; n++) {
-                         for(m = 0; m < M; m++) {
-                         Point c = new Point(n, m);
-                         if(pl1.equals(c))
-                         System.out.print(1);
-                         else if(pl2.equals(c))
-                         System.out.print(2);
-                         else"
-                         System.out.print(board[n][m]);
-                         }
-                         System.out.println();
-                         }
-                         System.out.println();
-                         }
-                         Thread.sleep(100);
-                         System.out.println();
-            //Runtime.getRuntime().exec("cls");
-            }*/
             System.out.println("Printing final path");
             for(i=0; i<s; i++)
             {
@@ -287,12 +259,13 @@ public static void main(String[] args) {
             }
         }
         
-        
+        count = 0;
         ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null, 0, 0));
 
         for(i = 1; i < meet_points + 1; i++) {
             player1.addAll(backtrace(Astar(meet[i-1], meet[i], null, 0, player1.size())));
         }
+        System.out.println(count);
 
         ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
 
@@ -305,6 +278,8 @@ public static void main(String[] args) {
             ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(bound, player1.size()-1)));
             player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
         }
+        System.out.println(count);
+        
         if(player1.size() > player2.size()) 
         {
             player1.remove(player1.size()-1);
@@ -313,7 +288,7 @@ public static void main(String[] args) {
         {
             player2.remove(player2.size()-1);
         }
-        print_route(player1, player2);
+        // print_route(player1, player2);
     }
 
     // If file is not valid
