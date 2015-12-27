@@ -53,7 +53,7 @@ int main(int argc, char *argv[]){
 
 
     // meeting points
-    int meet = rand() % (N/2);
+    int meet = N/2;
     int meeting1[meet], meeting2[meet];
 
     for (int i = 0; i < meet; i++){
