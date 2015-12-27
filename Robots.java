@@ -293,6 +293,7 @@ public class Robots {
         // If file is not valid
         catch(Exception e)
         {
+		System.out.println("Exception is raised");
         }
     }
 }       
