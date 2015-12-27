@@ -29,9 +29,6 @@ class Point  implements Comparable<Point> {
     { 
 	    if(this.r == a.r) return this.c -a.c;
 	    return this.r - a.r;
-        //int i;
-     //   if((i=this.r-a.r)!=0) return i;
-       // else return this.c - a.c;
     }
 
     @Override
@@ -57,8 +54,10 @@ class Interest implements Comparable<Interest> {
     @Override
     public int compareTo(Interest a)
     { 
-        double i;
-	return this.heur - a.heur;
+        int i;
+	    if((i = this.heur - a.heur) != 0) return i;
+        if((i = this.dist - a.dist) != 0) return i;
+        else return this.pos.compareTo(a.pos);
     }
 
     @Override
@@ -124,7 +123,6 @@ public class Robots {
         TreeSet<Point> closed = new TreeSet<Point>();
         Interest start_i = new Interest(start, 0, start.dist(fin), null);
         queue.add(start_i);
-        int size_t = size;
         String Name;
         if(player == null)
             Name = new String("Player 1 ");
@@ -133,33 +131,30 @@ public class Robots {
         while(!queue.isEmpty())
         {
             Interest curr = queue.poll();       // Get next element
-            System.out.println(Name + "considering new posisition at<" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
+            System.out.println(Name + "considering new posisition <" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
             if(curr.pos.equals(fin))            // Base case
                 return curr;
             if(closed.contains(curr.pos))       // No rechecks
                 continue;
             closed.add(curr.pos);
 
-            ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
-            for(Interest next : next_moves)
+            ArrayList<Interest> next_moves = curr.next(board,N,M,fin);
+            for(Interest next : next_moves)     // For every move
             {
                 int pos_print = next.dist + prev;
-                if(closed.contains(next.pos))
+                if(closed.contains(next.pos))   // No rechecks
                     continue;
-                if(player != null)
-                {
-                    if(next.dist >= size || !player[(next.dist)].equals(next.pos))
-                        queue.add(next);
-                    else
-                    {
-                        System.out.println("** Conflict ** , thinking about stall or another move");
-                        queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
-                    }
-                }
-                else
+                if(player == null || next.dist >= size || !player[(next.dist)].equals(next.pos))
                     queue.add(next);
+                else        // Collision
+                {
+                    System.out.println("** Conflict ** , thinking about stall or another move");
+                    queue.add(new Interest(next.pos, next.dist+1, next.heur+1, next.father));
+                }
             }
         }
+        // Should not get here
+        // It means that we couldn't reach teh destination
         System.out.println(closed.size());
         System.out.println(fin.c + " " + fin.r);
         System.out.println("You guys really fucked it up");
@@ -167,6 +162,7 @@ public class Robots {
         //  return null;
     }
 
+    // Takes the end point of a path and returns the whole path in an ArrayList
     public static ArrayList<Point> backtrace(Interest a)
     {
         ArrayList<Point> val = new ArrayList<Point>();
@@ -182,6 +178,7 @@ public class Robots {
         return val;
     }
 
+    // Prints the route of our two robots
     static void print_route(ArrayList<Point> player1, ArrayList<Point> player2)
     {
         try {
@@ -218,7 +215,7 @@ public class Robots {
             //Runtime.getRuntime().exec("cls");
             }*/
             System.out.println("Printing final path");
-            for(i=0;i<s;i++)
+            for(i=0; i<s; i++)
             {
                 Point pl1, pl2;
                 if(i < player1.size())
@@ -280,6 +277,8 @@ public static void main(String[] args) {
         for(i = 0; i < N; i++) {
             board[i] = in.next().toCharArray();
         }
+
+        // Check board and Meeting points are valid
         for(i = 0; i < meet_points + 1; i++)
         {
             if(board[meet[i].r][meet[i].c] == 'X') {
@@ -287,7 +286,8 @@ public static void main(String[] args) {
                 throw new IOException();
             }
         }
-
+        
+        
         ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
 
         for(i = 1; i < meet_points + 1; i++) {
