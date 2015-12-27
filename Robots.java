@@ -1,16 +1,14 @@
-/* Bats NTUA ECE PL1 spring semester 2014
- * In a rectangle there are bats (B), walls (-) and a spider (A)
- * Using only straight lines from one bat to another, without going through a wall
- * how far is the spider from (0,0)
+/* NTUA ECE AI robots
  *
- * 2 decimals required
+ * Given two robots and a plane with destinations and obstacles
+ * implement A* to get the two robots to pass through the destinations
+ * and meet at the last one
  */
 
 import java.util.*;
 import java.io.*;
 import java.io.FileNotFoundException;
 
-// Used to save bats, walls and spider
 class Point  implements Comparable<Point> {
     public int c, r;
 
@@ -49,10 +47,10 @@ class Point  implements Comparable<Point> {
 
 
 class Interest implements Comparable<Interest> {
-    public Point pos;
-    public int dist;
-    public int heur;
-    public Interest father;
+    public Point pos;           // Where it is
+    public int dist;            // Distance so far
+    public int heur;            // Heuristic distance to be travelled
+    public Interest father;     // Previous step
 
     @Override
     public int compareTo(Interest a)
@@ -80,20 +78,29 @@ class Interest implements Comparable<Interest> {
     Interest(Point p, int d, int h, Interest f) { pos = p; dist = d; heur = h; father = f; }
     Interest() { pos = new Point(); dist = 0; heur = 0; father = null; }
 
+    // Returns a list of all the possible points we can go
     public ArrayList<Interest> next(char[][] board, int N, int M, Point finish) {
         ArrayList<Interest> ret = new ArrayList<Interest>();
+        
+        // Down
         if(pos.r+1 < N && board[this.pos.r+1][this.pos.c] != 'X') {
             Point n = new Point(pos.r+1, pos.c);
             ret.add(new Interest(n, dist+1, dist+1+n.dist(finish), this));
         }
+
+        // Right
         if(pos.c+1 < M && board[this.pos.r][this.pos.c+1] != 'X') {
             Point n = new Point(pos.r, pos.c+1);
             ret.add(new Interest(n, dist+1, dist+1+n.dist(finish), this));
         }
+
+        // Up
         if(pos.r > 0 && board[this.pos.r-1][this.pos.c] != 'X') {
             Point n = new Point(pos.r-1, pos.c);
             ret.add(new Interest(n, dist+1, dist+1+n.dist(finish), this));
         }
+
+        // Left
         if(pos.c > 0 && board[this.pos.r][this.pos.c-1] != 'X') {
             Point n = new Point(pos.r, pos.c-1);
             ret.add(new Interest(n, dist+1, dist+1+n.dist(finish), this));
@@ -111,35 +118,38 @@ public class Robots {
     static int M, N;
     static char[][] board;
 
-    public static Interest Astar(Point start, Point fin, Point[] player ,int size,int prev) throws Exception{
+    // Given a starting and ending point, returns the last Interest of the path
+    // Usually it would be used in conjuction to backtrace
+    public static Interest Astar(Point start, Point fin, Point[] player, int size, int prev) throws Exception{
         PriorityQueue<Interest> queue = new PriorityQueue<Interest>();
         TreeSet<Point> closed = new TreeSet<Point>();
         Interest start_i = new Interest(start, 0, start.dist(fin), null);
         queue.add(start_i);
-        int size_t =size;
+        int size_t = size;
         String Name;
-        if(player==null)
-            Name=new String("Player 1 ");
+        if(player == null)
+            Name = new String("Player 1 ");
         else
-            Name=new String("Player 2 ");
+            Name = new String("Player 2 ");
         while(!queue.isEmpty())
         {
-            Interest curr = queue.poll();
-            if(curr.pos.equals(fin))
+            Interest curr = queue.poll();       // Get next element
+            System.out.println(Name + "considering new posisition at<" + curr.pos.r +"," + curr.pos.c +"> at step " + (curr.dist+prev));
+            if(curr.pos.equals(fin))            // Base case
                 return curr;
-            if(closed.contains(curr.pos))
+            if(closed.contains(curr.pos))       // No rechecks
                 continue;
             closed.add(curr.pos);
+
             ArrayList<Interest> next_moves= curr.next(board,N,M,fin);
             for(Interest next : next_moves)
             {
                 int pos_print = next.dist + prev;
-                System.out.println(Name + "considering new posisition at<" + next.pos.r +"," + next.pos.c +"> at step " + pos_print );
                 if(closed.contains(next.pos))
                     continue;
                 if(player != null)
                 {
-                    if(next.dist >= size_t || !player[(next.dist)].equals(next.pos))
+                    if(next.dist >= size || !player[(next.dist)].equals(next.pos))
                         queue.add(next);
                     else
                     {
@@ -151,6 +161,7 @@ public class Robots {
                     queue.add(next);
             }
         }
+        System.out.println(closed.size());
         System.out.println(fin.c + " " + fin.r);
         System.out.println("You guys really fucked it up");
         throw new Exception();
@@ -196,7 +207,7 @@ public class Robots {
                          System.out.print(1);
                          else if(pl2.equals(c))
                          System.out.print(2);
-                         else
+                         else"
                          System.out.print(board[n][m]);
                          }
                          System.out.println();
@@ -219,83 +230,93 @@ public class Robots {
                     pl2 = player2.get(i);
                 else
                     pl2 = player2.get(player2.size() - 1);
-                System.out.println("Player 1 going at posisition at<" + pl1.r +"," + pl1.c +"> at step " + i );
-                System.out.println("Player 2 going at posisition at<" + pl2.r +"," + pl2.c +"> at step " + i );
+                System.out.println("Player 1 going at posisition <" + pl1.r + "," + pl1.c + "> at step " + i );
+                System.out.println("Player 2 going at posisition <" + pl2.r + "," + pl2.c + "> at step " + i );
             }
-        }
-        catch(Exception e)
-        {}
     }
+    catch(Exception e)
+    {
+        e.printStackTrace();
+        System.out.println("Exception has been raised");
+    }
+}
 
-    public static void main(String[] args) {
+public static void main(String[] args) {
 
-        /* Input */
-        try {
-            Scanner in = new Scanner(System.in);
-            // Read dimensions
-            M = in.nextInt();
-            N = in.nextInt();
-            int r, c;
-            // Get starting points
+    /* Input */
+    try {
+        Scanner in = new Scanner(System.in);
+        // Read dimensions
+        M = in.nextInt();
+        N = in.nextInt();
+        int r, c;
+        // Get starting points
+        c = in.nextInt();
+        r = in.nextInt();
+        Point first = new Point(r, c);
+        c = in.nextInt();
+        r = in.nextInt();
+        Point second = new Point(r, c);
+
+        // Get meeting point
+        c = in.nextInt();
+        r = in.nextInt();
+        Point last = new Point(r, c);
+
+        // Get intermediate points
+        int meet_points = in.nextInt();
+        Point[] meet = new Point[meet_points + 1];
+
+        int i, j;
+        for(i = 0; i < meet_points; i++) {
             c = in.nextInt();
             r = in.nextInt();
-            Point first = new Point(r, c);
-            c = in.nextInt();
-            r = in.nextInt();
-            Point second = new Point(r, c);
-
-            // Get meeting point
-            c = in.nextInt();
-            r = in.nextInt();
-            Point last = new Point(r, c);
-
-            // Get intermediate points
-            int meet_points = in.nextInt();
-            Point[] meet = new Point[meet_points + 1];
-
-            int i, j;
-            for(i = 0; i < meet_points; i++) {
-                c = in.nextInt();
-                r = in.nextInt();
-                meet[i] = new Point(c,r);
-            }
-
-            meet[meet_points] = last;
-
-            // Get board
-            board = new char[N][M];
-            for(i = 0; i < N; i++) {
-                board[i] = in.next().toCharArray();
-            }
-
-            ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
-
-            for(i = 1; i < meet_points + 1; i++) {
-                player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
-            }
-
-            ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
-
-            for(i = 1; i < meet_points + 1; i++) {
-                ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
-                player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
-            }
-            if(player1.size() > player2.size()) 
-            {
-                player1.remove(player1.size()-1);
-            }
-            else
-            {
-                player2.remove(player2.size()-1);
-            }
-            print_route(player1, player2);
+            meet[i] = new Point(c,r);
         }
 
-        // If file is not valid
-        catch(Exception e)
+        meet[meet_points] = last;
+
+        // Get board
+        board = new char[N][M];
+        for(i = 0; i < N; i++) {
+            board[i] = in.next().toCharArray();
+        }
+        for(i = 0; i < meet_points + 1; i++)
         {
-            e.printStackTrace();
-            System.out.println("Exception is raised");
+            if(board[meet[i].r][meet[i].c] == 'X') {
+                System.out.println(meet[i].r + " " + meet[i].c);
+                throw new IOException();
+            }
         }
+
+        ArrayList<Point> player1 = backtrace(Astar(first, meet[0], null,0,0));
+
+        for(i = 1; i < meet_points + 1; i++) {
+            player1.addAll(backtrace(Astar(meet[i-1], meet[i], null,0,player1.size())));
+        }
+
+        ArrayList<Point> player2 = backtrace(Astar(second, meet[0],player1.toArray( new Point[player1.size()] ),player1.size(),0));
+
+        for(i = 1; i < meet_points + 1; i++) {
+            ArrayList<Point> temp =(new ArrayList<Point> (player1.subList(player2.size(), player1.size()-1)));
+            player2.addAll(backtrace(Astar(meet[i-1], meet[i], (temp.toArray(new Point[temp.size()])),temp.size(),player2.size())));
+        }
+        if(player1.size() > player2.size()) 
+        {
+            player1.remove(player1.size()-1);
+        }
+        else
+        {
+            player2.remove(player2.size()-1);
+        }
+        print_route(player1, player2);
     }
+
+    // If file is not valid
+    catch(Exception e)
+    {
+        e.printStackTrace();
+        System.out.println("Exception is raised");
+    }
+}
 }       
